@@ -1,0 +1,9 @@
+.idea/
+*.iml
+target/
+binary.png
+*cpl.png
+*testpage*
+/cpl.JPG
+/e-codices_csg-0018_160_max.jpg
+/e-codices_csg-0018_160_max_binary.png
