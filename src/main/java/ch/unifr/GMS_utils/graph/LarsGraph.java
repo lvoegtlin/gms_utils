@@ -1,4 +1,4 @@
-package GMS_utils.helper;
+package ch.unifr.GMS_utils.graph;
 
 import javafx.scene.shape.Polygon;
 import org.jgrapht.UndirectedGraph;

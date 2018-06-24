@@ -1,4 +1,4 @@
-package GMS_utils.helper;
+package ch.unifr.GMS_utils.graph;
 
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;

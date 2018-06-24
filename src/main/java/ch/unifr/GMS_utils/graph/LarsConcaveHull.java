@@ -22,9 +22,8 @@
  * Eric Grosso, eric.grosso.os@gmail.com
  * 
  */
-package GMS_utils.helper;
+package ch.unifr.GMS_utils.graph;
 
-import GMS_utils.AngieMSTGraph;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;

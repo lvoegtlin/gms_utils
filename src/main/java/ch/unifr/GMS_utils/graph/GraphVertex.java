@@ -1,4 +1,4 @@
-package GMS_utils.helper;
+package ch.unifr.GMS_utils.graph;
 
 /**
  * Created by larsvoegtlin on 09.12.16.

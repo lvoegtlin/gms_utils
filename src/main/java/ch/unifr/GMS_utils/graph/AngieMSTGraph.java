@@ -1,6 +1,5 @@
-package GMS_utils;
+package ch.unifr.GMS_utils.graph;
 
-import GMS_utils.helper.*;
 import boofcv.abst.feature.describe.ConfigSiftScaleSpace;
 import boofcv.abst.feature.detect.interest.ConfigSiftDetector;
 import boofcv.abst.feature.detect.interest.WrapSiftDetector;
@@ -13,16 +12,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.triangulate.DelaunayTriangulationBuilder;
 import georegression.struct.point.Point2D_F64;
-import javafx.geometry.Bounds;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.math3.stat.StatUtils;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.ConnectivityInspector;
 import org.jgrapht.alg.KruskalMinimumSpanningTree;
-import org.jgrapht.alg.NeighborIndex;
-import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import org.jgrapht.graph.Subgraph;
 import org.jgrapht.graph.UndirectedSubgraph;

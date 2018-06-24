@@ -1,4 +1,4 @@
-package GMS_utils.helper;
+package ch.unifr.GMS_utils.graph;
 
 import com.vividsolutions.jts.algorithm.Angle;
 import com.vividsolutions.jts.geom.Coordinate;
