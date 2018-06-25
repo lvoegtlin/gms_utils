@@ -12,42 +12,82 @@ import javax.xml.transform.TransformerException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Gms_utils{
     /**
-     * @param args 0: Path to input image
-     *             1: Path to output folder
-     *             2: Binarization algorithm(optional) (dog, otsu, sauvola)
+     * @param args 0: Path to input folder
+     *             1: Binarization algorithm(optional) (dog, otsu, sauvola)
      */
     public static void main(String[] args) throws IOException, TransformerException, ParserConfigurationException{
         BinarizationAlgos algo;
-        if(args.length < 2){
-            System.err.println("Both parameter (path to image and path to the output folder) are required!");
+        boolean info = false;
+        if(args.length < 1){
+            System.err.println("The parameter (path to input folder) is required!");
             System.exit(1);
         }
 
         try{
-            algo = BinarizationAlgos.valueOf(args[2]);
+            algo = BinarizationAlgos.valueOf(args[1]);
         } catch(IllegalArgumentException | IndexOutOfBoundsException e){
             algo = BinarizationAlgos.DOG;
         }
 
+        ArrayList<String> extensions = new ArrayList<>(Arrays.asList("jpg", "JPG", "PNG", "png"));
 
         String inputPath = args[0];
-        String outputPath = args[1];
-        String name_raw = inputPath.substring(inputPath.lastIndexOf("/") + 1);
-        String name = name_raw.substring(0, name_raw.lastIndexOf("."));
 
-        File inputFile = new File(inputPath);
+        File inputDirectory = new File(inputPath);
+        if(!inputDirectory.exists()){
+            System.err.println("Given directory is not existing!");
+            System.exit(1);
+        }
 
+        for(File f : inputDirectory.listFiles()){
+            if(!f.isDirectory()){
+                if(extensions.contains(FilenameUtils.getExtension(f.getName()))){
+                    File dir = new File(f.getParent() + "/"+FilenameUtils.getBaseName(f.getName()));
+                    System.out.println("Creating directory...");
+                    dir.mkdir();
+                    export(f, dir,  algo);
+                } else {
+                    info = true;
+                }
+            }
+            System.out.println("---------------");
+        }
+
+        if(info){
+            System.out.println("Allowed file extensions: ");
+            for(String s : extensions){
+                System.out.println(s);
+            }
+        }
+
+        System.out.println("Finished");
+    }
+
+    private static void export(File inputFile, File parent, BinarizationAlgos algo) throws IOException, ParserConfigurationException, TransformerException{
+        String baseName = FilenameUtils.getBaseName(inputFile.getName());
+        String parentString = parent.getPath();
         BufferedImage ori = ImageIO.read(inputFile);
+        ImageIO.write(ori, FilenameUtils.getExtension(inputFile.getName()),
+                new File(parentString + "/" + baseName + "." + FilenameUtils.getExtension(inputFile.getName()))
+        );
+        System.out.println("Start binarization...");
         BufferedImage bin = BinaryPageImageProcessing.binariseImage(ori, false, algo);
-        ImageIO.write(bin, FilenameUtils.getExtension(name_raw),
-                new File(FilenameUtils.getPath(inputPath) + name + "_binary." + FilenameUtils.getExtension(inputPath))
+        System.out.println("Save binarized image...");
+        ImageIO.write(bin, FilenameUtils.getExtension(inputFile.getName()),
+                new File(parentString + "/" + baseName + "_binary." + FilenameUtils.getExtension(inputFile.getName()))
         );
 
+        System.out.println("Start graph creation...");
         AngieMSTGraph graph = new AngieMSTGraph(30, true);
+        System.out.println("---Graph creation---");
         graph.createGraph(bin, ori, 10);
-        GraphExporter.export2XML(graph.getMstGraph(), outputPath, name + "_graph", name);
+        System.out.println("---Graph finished---");
+        System.out.println("Save graph...");
+        GraphExporter.export2XML(graph.getMstGraph(), parentString + "/", baseName + "_graph", baseName);
     }
 }
